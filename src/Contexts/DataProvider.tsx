@@ -8,7 +8,7 @@ interface StateContextType {
 }
 
 // Create the context with an initial value of undefined
-const GlobalContext = createContext<null | StateContextType>(null);
+const GlobalContext = createContext<undefined | StateContextType>(undefined);
 
 interface DataProviderProps {
   children: React.ReactNode;
@@ -57,9 +57,9 @@ export const useData = () => {
 };
 
 export const FindData = (id: any) => {
-  const {isLoading, Products} = useContext(GlobalContext)!;
+  const { isLoading, Products } = useContext(GlobalContext)!;
 
-  const Product = Products.find(p => p.id == id);
+  const Product = Products.find((p) => p.id == id);
 
   return [isLoading, Product];
 }
