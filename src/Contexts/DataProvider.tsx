@@ -62,7 +62,6 @@ export const FindData = (id: any) => {
   const Product = Products.find((p) => p.id == id);
 
   return [isLoading, Product];
-}
-
+};
 
 export default DataProvider;
