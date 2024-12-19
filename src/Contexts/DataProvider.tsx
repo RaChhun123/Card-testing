@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, createContext, useContext } from "react";
 
-// Define the type for the context value
 interface StateContextType {
   isLoading: boolean;
   Products: any[]; // You can further type this if you know the structure of the data
@@ -56,12 +55,11 @@ export const useData = () => {
   return context;
 };
 
-export const FindData = (id: any) => {
-  const { isLoading, Products } = useContext(GlobalContext)!;
-
-  const Product = Products.find((p) => p.id == id);
-
-  return [isLoading, Product];
+export const findData = (id: number) => {
+  const { isLoading, Products } = useData();
+  const Product = Products.find((p) => p.id === id);
+  
+  return { isLoading, Product };
 };
 
 export default DataProvider;

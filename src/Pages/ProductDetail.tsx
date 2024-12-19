@@ -1,27 +1,27 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { FindData } from "../Contexts/DataProvider";
+import { findData } from "../Contexts/DataProvider";
 import Loading from "../Components/Loading";
+import { useEffect } from "react";
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const [isLoading, Product] = FindData(id);
+  const { isLoading, Product } = findData(Number(id));
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    scroll(0,0)
+  })
 
   if (isLoading) return <Loading />;
 
   const { image, title, price, description } = Product;
   return (
-    <section className="container mx-auto my-10">
+    <section className="container mx-auto mt-36 mb-10 md:my-36">
       <div className="w-full mx-auto xl:w-[80%] lg:w-[90%]">
         <div className="grid gap-10 md:gap-3 grid-cols-1 md:grid-cols-2 px-4 ">
           <div className="h-80 md:h-[450px]">
             <img src={image} alt="" className="w-full h-full object-contain" />
           </div>
-          <div className="min-h-80 md:min-h-[450px] flex flex-col gap-4 md:justify-center ">
+          <div className="h-auto md:min-h-[450px] flex flex-col gap-4 md:justify-center ">
             <h2 className="text-2xl font-medium">{title}</h2>
             <p className="text-xl text-red-900">$ {price}</p>
             <p>{description}</p>
