@@ -1,41 +1,49 @@
 import axios from "axios";
 import { useEffect, useState, createContext, useContext } from "react";
 
+// Define product type
+interface Product {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  description: string;
+  image: string;
+}
+
 interface StateContextType {
   isLoading: boolean;
-  Products: any[]; // You can further type this if you know the structure of the data
+  Products: Product[]; // You can further type this if you know the structure of the data
 }
 
 // Create the context with an initial value of undefined
-const GlobalContext = createContext<undefined | StateContextType>(undefined);
+const GlobalContext = createContext<null | StateContextType>(null);
 
-interface DataProviderProps {
-  children: React.ReactNode;
-}
 
-const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
+
+const DataProvider = ({ children }: { children: JSX.Element }) => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<any[]>([]); // You can replace `any` with a more specific type
-  const url = "https://fakestoreapi.com/products?limit=20";
+  const [data, setData] = useState<Product[]>([]);
+  const url = "https://fakestoreapi.com/products";
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios(url);
+        const { data } = await axios.get(url);
         setData(
           data.filter(({ category }: { category: string }) =>
             ["men's clothing", "women's clothing"].includes(category)
           )
         );
       } catch (e: any) {
-        console.error(e.request?.status);
+        console.error("Error fetching data", e.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchUser();
-  }, [url]); // Dependency array added to avoid infinite loop
+  }, []);
 
   return (
     <GlobalContext.Provider value={{ isLoading, Products: data }}>
@@ -53,13 +61,6 @@ export const useData = () => {
   }
 
   return context;
-};
-
-export const findData = (id: number) => {
-  const { isLoading, Products } = useData();
-  const Product = Products.find((p) => p.id === id);
-  
-  return { isLoading, Product };
 };
 
 export default DataProvider;

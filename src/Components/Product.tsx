@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { TicketPlus } from "lucide-react";
+import { useCart } from "react-use-cart";
 
 interface Props {
   id: number;
@@ -7,15 +8,25 @@ interface Props {
   category: string;
   title: string;
   price: number;
+  description: string;
 }
-const Product = ({ id, image, category, title, price }: Props) => {
+const Product = ({ id, image, category, title, price, description }: Props) => {
+  const { addItem } = useCart();
+
   return (
     <div key={id} className="h-[420px] sm:h-96">
       <div className=" h-2/3  p-12 border border-gray-200 shadow-sm relative overflow-hidden group">
         <button
           className="absolute top-3 right-3 lg:-right-6 lg:group-hover:right-3  transition-all z-10"
           onClick={() => {
-            console.log("hello");
+            addItem({
+              id: id.toString(),
+              category,
+              title,
+              price,
+              image,
+              description,
+            });
           }}
         >
           <TicketPlus />
