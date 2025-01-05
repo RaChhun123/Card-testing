@@ -1,6 +1,7 @@
 import { useToggle } from "../Contexts/ToggleProvider";
 import { ArrowRight, Minus, Plus, Trash2, X } from "lucide-react";
 import { useCart } from "react-use-cart";
+import { useEffect } from "react";
 const Sidebar = () => {
   const { setToggle, toggle } = useToggle()!;
   const {
@@ -12,6 +13,15 @@ const Sidebar = () => {
     updateItemQuantity,
     totalItems,
   } = useCart();
+
+  // Prevent scrolling when the sidebar is open
+  useEffect(() => {
+    if (toggle) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [toggle]);
 
   return (
     <section>
